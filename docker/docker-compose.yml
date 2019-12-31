@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  web:
+    build:
+      context: ../../hw_2_2_Denis_Bornosus
+      dockerfile: php-apache/Dockerfile
+    container_name: hillel_web_php
+    restart: always
+    volumes:
+      - ../public:/var/www/html
+    ports:
+      - 8080:80
+
+  db:
+    container_name: hillel_db
+    image: mysql:5.7.28
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: hillel
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    container_name: hillel_phpmyadmin
+    image: phpmyadmin/phpmyadmin:4.9.1
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8081:80
+
+volumes:
+  dbdata:
